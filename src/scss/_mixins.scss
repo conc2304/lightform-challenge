@@ -1,0 +1,19 @@
+
+@mixin brand-h1($color: null, $font-size: null) {
+  font-family: Poppins;
+  font-size: $font-size;
+  color: $color;
+  font-weight: 200;
+  line-height: 1.2em;
+}
+
+@mixin brand-h2($color: null, $font-size: null) {
+  font-family: Poppins;
+  color: $color-brand-primary-black-text;
+  font-weight: 400;
+  line-height: 1.2em;
+}
+
+
+
+

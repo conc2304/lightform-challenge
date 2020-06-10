@@ -34,7 +34,7 @@
     </v-app-bar>
 
     <v-content>
-      <Test :propValue="'This is a Test'"/>
+      <Test :propValue="'This is a Test'" />
       <HelloWorld />
     </v-content>
   </v-app>
@@ -58,3 +58,31 @@ export default Vue.extend({
   }),
 });
 </script>
+
+<style lang="scss">
+/* Document level adjustments */
+html {
+  font-size: 17px;
+}
+@media (max-width: 900px) {
+  html {
+    font-size: 15px;
+  }
+}
+@media (max-width: 400px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* Type will scale with document */
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 2.5rem;
+}
+h3 {
+  font-size: 2rem;
+}
+</style>
