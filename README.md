@@ -19,7 +19,6 @@ Technologies used: Pug, SCSS, Vue (with Typescript and Class-Style Components), 
 I used [Vue CLI](https://cli.vuejs.org/) to generate the scaffolding for this app.
 
 Dependencies Added:
-
 - [Veutify](https://vuetifyjs.com/en/) (Material UI Components)
 - [Axios](https://www.npmjs.com/package/axios) (Promise based HTTP client for browsers)
 

@@ -34,6 +34,7 @@
     </v-app-bar>
 
     <v-content>
+      <Test :propValue="'This is a Test'"/>
       <HelloWorld />
     </v-content>
   </v-app>
@@ -42,12 +43,14 @@
 <script lang="ts">
 import Vue from "vue";
 import HelloWorld from "./components/HelloWorld.vue";
+import Test from "@/components/Test.vue";
 
 export default Vue.extend({
   name: "App",
 
   components: {
     HelloWorld,
+    Test,
   },
 
   data: () => ({

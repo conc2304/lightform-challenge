@@ -9,10 +9,6 @@ import { Component, Prop, Vue } from "vue-property-decorator";
   components: {},
 })
 export default class Test extends Vue {
-  constructor() {
-    super();
-  }
-
   /** PROPERTIES ------------------------- */
   @Prop({ type: String, default: "TEST" }) propValue!: string;
 
@@ -33,3 +29,9 @@ export default class Test extends Vue {
   /** PRIVATE METHODS -------------------- */
 }
 </script>
+
+<style lang="scss" scoped>
+p {
+  color: $test-color;
+}
+</style>
