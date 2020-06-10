@@ -1,5 +1,8 @@
 $test-color: red;
 
+// @import "./poppins-medium-mixin.scss";
+
+//**** Brand Colors ***********************************************************
 $color-brand-background-grey: #FCFAFF;
 $color-brand-background-black: rgba(0,0,0,0.99);
 
@@ -12,3 +15,10 @@ $color-brand-link-blue: #007BFF;
 $color-brand-button-blue: #2C65FF;
 $color-brand-button-blue-hover: #0056B3;
 
+//**** Asset Directories ***********************************************************
+$font-dir-poppins: "/assets/fonts/poppins/";
+
+//**** Fonts ***********************************************************
+$font-family-poppins-light: PoppinsLight, Helvetica, sans-serif;
+$font-family-poppins-regular: PoppinsRegular, Helvetica, sans-serif;
+$font-family-poppins-medium: PoppinsMedium, Helvetica, sans-serif;

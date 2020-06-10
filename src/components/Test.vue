@@ -31,7 +31,10 @@ export default class Test extends Vue {
 </script>
 
 <style lang="scss" scoped>
+$text-color: $color-brand-primary-black-text;
+
 p {
-  color: $test-color;
+  @include noto-sans-light($text-color, 2rem);
+  @include linear-gradient-brand-grey;
 }
 </style>
