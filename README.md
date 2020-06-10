@@ -19,7 +19,10 @@ Technologies used: Pug, SCSS, Vue (with Typescript and Class-Style Components), 
 I used [Vue CLI](https://cli.vuejs.org/) to generate the scaffolding for this app.
 
 Dependencies Added:
-- [Veutify](https://vuetifyjs.com/en/) (Material UI Components)
+- [Vuex](https://vuex.vuejs.org/guide/) (State management pattern + library for Vue.js)
+- [Vuetify](https://vuetifyjs.com/en/) (Material UI Components)
 - [Axios](https://www.npmjs.com/package/axios) (Promise based HTTP client for browsers)
+- [Vuelidate](https://vuelidate.js.org/#getting-started) (Model-based validation for Vue.js)
+- [Class-Components](https://class-component.vuejs.org/) (Class-style syntax support for Vue components)
 
 ## Requirements
