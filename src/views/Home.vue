@@ -21,25 +21,52 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import NoteComponent from "@/components/NoteComponent.vue";
+import NoteFetcher from "@/services/NoteFetcher.service";
+import { AxiosResponse } from "axios";
 
 @Component({
-  components: {},
+  components: {
+    NoteComponent,
+  },
 })
 export default class Home extends Vue {
   /** PROPERTIES ------------------------- */
   @Prop({ type: String, default: "Title" }) noteTitle!: string;
 
   /** PUBLIC PROPERTIES------------------- */
-  // public !: string;
+  public notes: Array<object> = [];
+  public error = false;
+  public loading = true;
+  public errorMsg = "";
+  public noteRequestLimit = 3;
+  public nextRequestNotesPage = 1;
+  public totalNotesAvailable = 0;
   /** PUBLIC METHODS --------------------- */
 
   /** LIFECYCLE HOOKS  ------------------- */
   // beforeCreate(): void {}
   // created(): void {}
   // beforeMount(): void {}
-  // mounted(): void {
-  //   console.log(process.env.NODE_ENV);
-  // }
+  mounted(): void {
+    this.loading = true;
+
+    NoteFetcher.getListNotes(this.nextRequestNotesPage, this.noteRequestLimit)
+      .then(response => {
+        console.log(response);
+        this.notesConcat(response);
+        this.totalNotesAvailable = response.data.total;
+        this.nextRequestNotesPage++;
+      })
+      .catch(error => {
+        console.log(error);
+        this.errorMsg = "Unable to retrieve your notes.";
+        this.error = true;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
+  }
   // beforeDestroy(): void {}
   // destroyed(): void {}
   // beforeUpdate(): void {}
@@ -48,7 +75,18 @@ export default class Home extends Vue {
   /** PRIVATE PROPERTIES ----------------- */
 
   /** PRIVATE METHODS -------------------- */
+  private notesConcat(response: AxiosResponse): void {
+    const newNotes = response.data._embedded.notes;
+    const allNotes = this.notes.concat(newNotes);
+    const set = new Set(allNotes);
+    this.notes = Array.from(set);
+  }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.no-notes-wrapper {
+  @include noto-sans-light($color-brand-red-base, 22px);
+  text-align: center;
+}
+</style>
