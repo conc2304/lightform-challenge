@@ -14,7 +14,7 @@
 
 ## Discussion
 
-Technologies used: Pug, SCSS, Vue (with Typescript and Class-Style Components), Vue CLI, Mocha, Cypress, Babel, and Webpack
+Technologies used: Pug, SCSS, Vue (with Typescript and Class-Style Components), Vue CLI, Mocha (with Chai assertions), Cypress, Babel, and Webpack
 
 I used [Vue CLI](https://cli.vuejs.org/) to generate the scaffolding for this app.
 
