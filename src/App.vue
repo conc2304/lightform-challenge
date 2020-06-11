@@ -1,84 +1,68 @@
-<template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+<template lang="pug">
+  v-app
+    TheHeaderBar
+    v-content
+      .notes-wrapper( v-if="notes.length > 0")
+        v-container( fluid)
+          v-cols( cols="12")
+            v-row( 
+              align="end"
+              justify="center"
+            )
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content> </v-content>
-  </v-app>
+            NoteComponent(
+              v-for="(note, i) in notes" 
+              :key="i" 
+              :note="note"
+            )
+      .no-notes-wrapper( v-else) 
+        h2 You currently have no notes.  Why don't you start a new one.
+        .new-note
+          NoteComponent()
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
-import Test from "@/components/Test.vue";
+import axios from "axios";
+import TheHeaderBar from "@/components/TheHeaderBar.vue";
+import NoteComponent from "@/components/NoteComponent.vue";
 
 export default Vue.extend({
   name: "App",
 
   components: {
-
+    TheHeaderBar,
+    NoteComponent,
   },
 
   data: () => ({
-    //
+    noteResponse: {},
+    notes: [],
+    error: false,
+    errorMsg: "",
   }),
+
+  mounted(): void {
+    axios
+      .get("http://note.dev.cloud.lightform.com/notes")
+      .then(response => {
+        console.log(response.data);
+        console.log(typeof response.data);
+
+        this.notes = response.data._embedded.notes;
+      })
+      .catch(error => {
+        console.log(error);
+        this.errorMsg = "Unable to retrieve your notes.";
+        this.error = true;
+      });
+  },
 });
 </script>
 
 <style lang="scss">
-/* Document level adjustments */
-html {
-  font-size: 17px;
-}
-@media (max-width: 900px) {
-  html {
-    font-size: 15px;
-  }
-}
-@media (max-width: 400px) {
-  html {
-    font-size: 13px;
-  }
-}
-
-/* Type will scale with document */
-h1 {
-  font-size: 3rem;
-}
-h2 {
-  font-size: 2.5rem;
-}
-h3 {
-  font-size: 2rem;
+.no-notes-wrapper {
+  @include noto-sans-light($color-brand-red-base, 22px);
+  text-align: center;
 }
 </style>
