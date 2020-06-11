@@ -1,24 +1,32 @@
-$test-color: red;
-
-// @import "./poppins-medium-mixin.scss";
-
 //**** Brand Colors ***********************************************************
-$color-brand-background-grey: #FCFAFF;
-$color-brand-background-black: rgba(0,0,0,0.99);
+$color-brand-white-base: #ffffff;
 
-$color-brand-primary-black: #000000;
-$color-brand-primary-black-text: #181818;
-$color-brand-primary-black-h2: #2E2E2E;
-$color-brand-primary-white: #FFFFFF;
+$color-brand-text-gray: #babfd1;
+$color-brand-text-gray-dark: #575c6d;
+$color-brand-gray-light: #3c3e47;
+$color-brand-gray-base: #2b2b30;
+$color-brand-gray-dark: #232326;
 
-$color-brand-link-blue: #007BFF;
-$color-brand-button-blue: #2C65FF;
-$color-brand-button-blue-hover: #0056B3;
+$color-brand-ui-black-light: #1a1a1c;
+$color-brand-ui-black: #161618;
+$color-brand-canvas-black: #0e0e0e;
 
-//**** Asset Directories ***********************************************************
-$font-dir-poppins: "/assets/fonts/poppins/";
+$color-brand-black-base: #000000;
 
-//**** Fonts ***********************************************************
-$font-family-poppins-light: PoppinsLight, Helvetica, sans-serif;
-$font-family-poppins-regular: PoppinsRegular, Helvetica, sans-serif;
-$font-family-poppins-medium: PoppinsMedium, Helvetica, sans-serif;
+$color-brand-blue-light: #5885ff;
+$color-brand-blue-base: #2c65ff;
+$color-brand-blue-dark: #2352d0;
+
+$color-brand-purple-base: #7c2cff;
+$color-brand-purple-dark: #690efd;
+
+$color-brand-yellow-base: #f2c94c;
+$color-brand-yellow-dark: #dcb745;
+
+$color-brand-green-bright: #17e8b0;
+$color-brand-green-light: #15c595;
+$color-brand-green-base: #15c595;
+
+$color-brand-red-base: #d43333;
+$color-brand-red-dark: #c23030;
+$color-brand-red-Mask: #ff0000;

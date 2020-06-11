@@ -33,10 +33,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-content>
-      <Test :propValue="'This is a Test'" />
-      <HelloWorld />
-    </v-content>
+    <v-content> </v-content>
   </v-app>
 </template>
 
@@ -49,8 +46,7 @@ export default Vue.extend({
   name: "App",
 
   components: {
-    HelloWorld,
-    Test,
+
   },
 
   data: () => ({
