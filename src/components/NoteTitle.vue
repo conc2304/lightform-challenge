@@ -17,9 +17,9 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component({
   components: {},
 })
-export default class Test extends Vue {
+export default class NoteTitle extends Vue {
   /** PROPERTIES ------------------------- */
-  @Prop({ type: String, default: "TEST" }) noteTitle!: string;
+  @Prop({ type: String, default: "Title" }) noteTitle!: string;
 
   /** PUBLIC PROPERTIES------------------- */
   // public !: string;

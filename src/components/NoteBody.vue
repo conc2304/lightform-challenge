@@ -9,6 +9,7 @@
         label="Take a note ..."
         solo
         dark
+        required
       )
 </template>
 

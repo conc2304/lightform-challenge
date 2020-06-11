@@ -9,11 +9,15 @@
         NoteTitle( :noteTitle="note.title")
         NoteBody( :noteBody="note.body")
         v-card-actions
-          v-btn(
-            color="colorBrandGreenBase"
-          ) Save
-          v-btn(
+          v-btn#save-btn(
+            @click="handleSave()"
+            :disabled="saveDisabled"
+            :class="isExistingNote ? 'update' : 'save'"
+          ) {{ isExistingNote ? "Update" : "Save"}}
+          v-btn#delete-btn(
             color="colorBrandRedBase"
+            @click="deleteNote(note.id)"
+            :disabled="deleteDisabled"
           ) Delete
 </template>
 
@@ -21,6 +25,9 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import NoteTitle from "@/components/NoteTitle.vue";
 import NoteBody from "@/components/NoteBody.vue";
+import { NoteObject } from "@/types";
+import NoteFetcher from "@/services/NoteFetcher.service";
+import { test } from "mocha";
 
 @Component({
   components: {
@@ -30,15 +37,81 @@ import NoteBody from "@/components/NoteBody.vue";
 })
 export default class Test extends Vue {
   /** PROPERTIES ------------------------- */
-  // @Prop({ type: String, default: "Title" }) noteTitle!: string;
-  // @Prop({ type: String, default: "Take a note ..." }) noteBody!: string;
-
-  @Prop({ type: String, default: { title: "Title", body: "Take a note ..." } })
-  note!: object;
+  @Prop({
+    type: Object,
+    default: () => ({ title: "Title", body: "Take a note ...", id: -1 }),
+  })
+  note!: NoteObject;
 
   /** PUBLIC PROPERTIES------------------- */
   public valid = true;
+  public deleteDisabled = false;
+  public saveDisabled = false;
+  public errorMsgs: Array<string> = [];
+  public error = false;
+
   /** PUBLIC METHODS --------------------- */
+  public get isExistingNote(): boolean {
+    return this.note.id > 0;
+  }
+
+  public handleSave(): void {
+    if (this.note.id == -1) this.saveNote(this.note);
+    else this.updateNote(this.note);
+  }
+
+  private saveNote(note: NoteObject): void {
+    this.saveDisabled = true;
+    NoteFetcher.saveNote(note)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        this.errorMsgs.push("Unable to retrieve your notes.");
+        this.error = true;
+        throw error;
+      })
+      .finally(() => {
+        this.saveDisabled = false;
+        this.$emit("note_saved", note);
+      });
+  }
+
+  private updateNote(note: NoteObject): void {
+    NoteFetcher.updateNote(note)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        this.errorMsgs.push("Unable to retrieve your notes.");
+        this.error = true;
+        throw error;
+      })
+      .finally(() => {
+        this.deleteDisabled = false;
+        this.$emit("note_updated", note.id);
+      });
+  }
+
+  private deleteNote(noteId: number): void {
+    this.deleteDisabled = true;
+
+    NoteFetcher.deleteListNote(noteId)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        this.errorMsgs.push("Unable to retrieve your notes.");
+        this.error = true;
+        throw error;
+      })
+      .finally(() => {
+        this.deleteDisabled = false;
+        this.$emit("note_deleted", noteId);
+      });
+  }
+
+  // public saveNote(): void {}
 
   /** LIFECYCLE HOOKS  ------------------- */
   // beforeCreate(): void {}
@@ -64,5 +137,20 @@ export default class Test extends Vue {
   border-radius: 3px;
   // max-width: 200px;
   margin: 20px;
+}
+
+button#save-btn {
+  &.update {
+    background-color: $color-brand-purple-base;
+    &:hover {
+      background-color: $color-brand-purple-dark;
+    }
+  }
+  &.save {
+    background-color: $color-brand-green-base;
+    &:hover {
+      background-color: $color-brand-green-light;
+    }
+  }
 }
 </style>

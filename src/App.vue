@@ -2,19 +2,20 @@
   v-app
     TheHeaderBar
     v-content
-      .notes-wrapper( v-if="notes.length > 0")
+      .notes-wrapper( v-if="notes.length > 0 || loading")
         v-container( fluid)
-          v-cols( cols="12")
+          v-col( cols="12")
             v-row( 
               align="end"
               justify="center"
             )
-
-            NoteComponent(
-              v-for="(note, i) in notes" 
-              :key="i" 
-              :note="note"
-            )
+              NoteComponent()
+              NoteComponent(
+                v-for="(note, i) in notes" 
+                :key="i" 
+                :note="note"
+              )
+              
       .no-notes-wrapper( v-else) 
         h2 You currently have no notes.  Why don't you start a new one.
         .new-note
@@ -23,9 +24,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import axios from "axios";
 import TheHeaderBar from "@/components/TheHeaderBar.vue";
 import NoteComponent from "@/components/NoteComponent.vue";
+import NoteFetcher from "@/services/NoteFetcher.service";
+import { AxiosResponse } from "axios";
 
 export default Vue.extend({
   name: "App",
@@ -40,22 +42,39 @@ export default Vue.extend({
     notes: [],
     error: false,
     errorMsg: "",
+    loading: true,
+    limit: 3,
+    nextPageOfNotesToGet: 1,
+    totalNotesAvailable: 0,
   }),
 
   mounted(): void {
-    axios
-      .get("http://note.dev.cloud.lightform.com/notes")
-      .then(response => {
-        console.log(response.data);
-        console.log(typeof response.data);
+    this.loading = true;
 
-        this.notes = response.data._embedded.notes;
+    NoteFetcher.getListNotes(this.nextPageOfNotesToGet, this.limit)
+      .then(response => {
+        console.log(response);
+        this.notesConcat(response);
+        this.totalNotesAvailable = response.data.total;
+        this.nextPageOfNotesToGet++;
       })
       .catch(error => {
         console.log(error);
         this.errorMsg = "Unable to retrieve your notes.";
         this.error = true;
+      })
+      .finally(() => {
+        this.loading = false;
       });
+  },
+
+  methods: {
+    notesConcat(response: AxiosResponse): void {
+      const newNotes = response.data._embedded.notes;
+      const allNotes = this.notes.concat(newNotes);
+      const set = new Set(allNotes);
+      this.notes = Array.from(set);
+    },
   },
 });
 </script>
