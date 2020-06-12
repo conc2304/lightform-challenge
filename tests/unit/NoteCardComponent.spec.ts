@@ -16,11 +16,4 @@ describe("Test.vue", () => {
   it("creates component", async () => {
     expect(wrapper).to.be.ok;
   });
-
-  // it("increments count when button is clicked", async () => {
-  //   wrapper.find("button").trigger("click");
-  //   await Vue.nextTick();
-  //   const count = wrapper.find("#count").text();
-  //   expect(count).to.equal("1");
-  // });
 });
