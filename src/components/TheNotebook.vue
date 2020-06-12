@@ -6,11 +6,14 @@
             align="end"
             justify="center"
           )
-            NoteCardComponent()
+            NoteCardComponent(
+              :inNotebook="true"
+            )
             NoteCardComponent(
               v-for="(note, i) in notes" 
               :key="i" 
               :note="note"
+              :inNotebook="true"
               @note_deleted="handleDeletedNote"
               @note_saved="handleAddedNote"
             )
@@ -137,7 +140,6 @@ export default class Home extends Vue {
     const notebookHeight = this.$el.clientHeight;
     const windowHeight = window.innerHeight;
 
-    console.log(notebookHeight, windowHeight);
     if (notebookHeight < windowHeight * 0.66) {
       this.getNotes();
     }

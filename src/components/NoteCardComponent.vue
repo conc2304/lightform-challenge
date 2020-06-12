@@ -1,8 +1,8 @@
 <template lang="pug">
   v-card.note-card( 
     v-if="note"
-    class="ma-3 pa-6"
     outlined
+    :class="[inNotebook ? 'tile ma-3 pa-6' : 'full-page-note']"
   )
     v-form( 
       ref="form"
@@ -36,6 +36,11 @@
             @click="deleteNote(note.id)"
             :disabled="deleting"
           ) Delete
+        .see-full-note-link 
+          p(
+            v-if="inNotebook && note.id > 0"
+            @click="navigateToFullNote(note.id)"
+          ) view full note
 </template>
 
 <script lang="ts">
@@ -53,6 +58,11 @@ export default class NoteCardComponent extends Vue {
     default: () => ({ title: "", body: "", id: -1 }),
   })
   note!: NoteObject;
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  inNotebook!: boolean;
 
   /** PUBLIC PROPERTIES------------------- */
   public valid = true;
@@ -88,6 +98,10 @@ export default class NoteCardComponent extends Vue {
     } else {
       this.updateNote(this.note);
     }
+  }
+
+  public navigateToFullNote(noteId: number) {
+    this.$router.push({ name: "Note", params: { noteId: noteId.toString() } });
   }
 
   // public saveNote(): void {}
@@ -173,9 +187,9 @@ export default class NoteCardComponent extends Vue {
 }
 button#save-btn {
   &.update {
-    background-color: $color-brand-purple-base;
+    background-color: $color-brand-blue-base;
     &:hover {
-      background-color: $color-brand-purple-dark;
+      background-color: $color-brand-blue-dark;
     }
   }
   &.save {
@@ -183,6 +197,18 @@ button#save-btn {
     &:hover {
       background-color: $color-brand-green-light;
     }
+  }
+}
+
+.see-full-note-link {
+  text-align: center;
+  @include poppins-medium($color-brand-blue-light, 14px);
+  margin: 10px auto 0;
+  min-height: 24px;
+
+  &:hover {
+    color: $color-brand-blue-base;
+    cursor: pointer;
   }
 }
 </style>
