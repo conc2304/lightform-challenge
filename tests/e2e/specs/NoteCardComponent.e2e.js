@@ -30,7 +30,6 @@ describe("Home Page", () => {
         const text = buttons.eq(0).text();
         expect(buttons).to.have.length(1);
         expect(text).to.include("Save");
-        // expect(firstNoteCard).to.have.class("new-note");
       });
 
     cy.get(".new-note")

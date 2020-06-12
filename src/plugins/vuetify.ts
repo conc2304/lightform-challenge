@@ -11,6 +11,16 @@ export default new Vuetify({
     dark: true,
     themes: {
       dark: {
+        // vuetify themeing pallete
+        primary: "#2c65ff",
+        secondary: "#2b2b30",
+        accent: "#82B1FF",
+        error: "#d43333",
+        info: "#7c2cff",
+        success: "#15c595",
+        warning: "#f2c94c",
+
+        // Lightform Brand Colors
         colorBrandWhiteBase: "#ffffff",
         colorBrandTextGray: "#babfd1",
         colorBrandTextGrayDark: "#575c6d",
