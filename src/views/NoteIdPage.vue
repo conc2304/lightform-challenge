@@ -73,7 +73,8 @@ export default class NoteIdPage extends Vue {
         this.noteInView = {
           title: "Not Available",
           body: "...",
-        }
+          id: -1,
+        };
       })
       .finally(() => {
         this.loading = false;

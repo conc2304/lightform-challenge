@@ -34,32 +34,15 @@ class DataFetcher {
   }
 
   public async updateNote(note: NoteObject): Promise<AxiosResponse> {
-    const path = `${this.LF_API_URL}/notes`;
+    const path = `${this.LF_API_URL}/notes?id=${note.id}`;
+    const noteId = note.id.toString();
     const data = {
-      "title": note.title,
-      "body": note.body
-    };
-
-    const jsonData = JSON.stringify(data);
-
-    // http://note.dev.cloud.lightform.com/notes
-    console.log(data);
-    return axios({
-      method: 'patch',
-      url: "http://note.dev.cloud.lightform.com/notes",
-      data: data,
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-    }).then(function (response) {
-      return response
-    }).catch(function (error) {
-      throw error;
-    });
+      "title": note.title.toString(),
+      "body": note.body.toString()
+    }
 
     return axios
-      .patch(path, data)
+      .post(path, data)
       .then(response => response)
       .catch(error => {
         throw error;
@@ -69,27 +52,19 @@ class DataFetcher {
   public async saveNote(note: NoteObject): Promise<AxiosResponse> {
     const path = `${this.LF_API_URL}/notes`;
     const data = {
-      "title": note.title,
-      "body": note.body
-    };
-
-    const axiosConfig = {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Access-Control-Allow-Origin": "*",
-      },
+      "title": note.title.toString(),
+      "body": note.body.toString()
     }
-    const jsonData = JSON.stringify(data);
 
     return axios
-      .put(path, {}, axiosConfig)
+      .post(path, data)
       .then(response => response)
       .catch(error => {
         throw error;
       });
   }
 
-  public async retreiveNote(noteId: string) {
+  public async retreiveNote(noteId: string): Promise<AxiosResponse> {
     const path = `${this.LF_API_URL}/notes/${noteId}`;
     const params = {
       params: {

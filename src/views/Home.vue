@@ -12,22 +12,7 @@ import TheNotebook from "@/components/TheNotebook.vue";
     TheNotebook,
   },
 })
-export default class Home extends Vue {
-  /** PROPERTIES ------------------------- */
-  /** PUBLIC PROPERTIES------------------- */
-  /** PUBLIC METHODS --------------------- */
-  /** LIFECYCLE HOOKS  ------------------- */
-  // beforeCreate(): void {}
-  // created(): void {}
-  // beforeMount(): void {}
-  // mounted(): void {  }
-  // beforeDestroy(): void {}
-  // destroyed(): void {}
-  // beforeUpdate(): void {}
-  // updated(): void {}
-  /** PRIVATE PROPERTIES ----------------- */
-  /** PRIVATE METHODS -------------------- */
-}
+export default class Home extends Vue {}
 </script>
 
 <style lang="scss"></style>
