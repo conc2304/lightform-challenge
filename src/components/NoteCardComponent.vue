@@ -24,6 +24,10 @@
           dark
           required
         )
+
+        .error-msg-wrapper
+          .error-msg( v-if="error" ) {{ errorMsg }}
+
         v-card-actions.note-actions
           v-btn#save-btn(
             @click="handleSave()"
@@ -68,7 +72,7 @@ export default class NoteCardComponent extends Vue {
   public valid = true;
   public saving = false;
   public deleting = false;
-  public errorMsgs: Array<string> = [];
+  public errorMsg!: string;
   public error = false;
 
   public titleRules = [
@@ -84,14 +88,6 @@ export default class NoteCardComponent extends Vue {
   ];
 
   /** PUBLIC METHODS --------------------- */
-  public get isExistingNote(): boolean {
-    return this.note.id > 0;
-  }
-
-  public get noteIsSavable(): boolean {
-    return this.valid && !this.saving;
-  }
-
   public handleSave(): void {
     if (this.note.id == -1) {
       this.saveNote(this.note);
@@ -100,23 +96,19 @@ export default class NoteCardComponent extends Vue {
     }
   }
 
+  public get isExistingNote(): boolean {
+    return this.note.id > 0;
+  }
+
+  public get noteIsSavable(): boolean {
+    return this.valid && !this.saving;
+  }
+
   public navigateToFullNote(noteId: number) {
     this.$router.push({ name: "Note", params: { noteId: noteId.toString() } });
   }
 
-  // public saveNote(): void {}
-
   /** LIFECYCLE HOOKS  ------------------- */
-  // beforeCreate(): void {}
-  // created(): void {}
-  // beforeMount(): void {}
-  mounted(): void {
-    // console.log(process.env.NODE_ENV);
-  }
-  // beforeDestroy(): void {}
-  // destroyed(): void {}
-  // beforeUpdate(): void {}
-  // updated(): void {}
 
   /** PRIVATE PROPERTIES ----------------- */
 
@@ -124,12 +116,10 @@ export default class NoteCardComponent extends Vue {
   private saveNote(note: NoteObject): void {
     this.saving = true;
     NoteFetcher.saveNote(note)
-      .then(response => {
-        console.log(response);
-      })
+      .then()
       .catch(error => {
-        this.errorMsgs.push("Unable to retrieve your notes.");
-        this.error = true;
+        const errorMsg = "Unable to save your note.";
+        this.displayError(errorMsg);
         throw error;
       })
       .finally(() => {
@@ -141,12 +131,10 @@ export default class NoteCardComponent extends Vue {
   private updateNote(note: NoteObject): void {
     this.saving = true;
     NoteFetcher.updateNote(note)
-      .then(response => {
-        console.log(response);
-      })
+      .then()
       .catch(error => {
-        this.errorMsgs.push("Unable to retrieve your notes.");
-        this.error = true;
+        const errorMsg = "Unable to update your note.";
+        this.displayError(errorMsg);
         throw error;
       })
       .finally(() => {
@@ -159,18 +147,25 @@ export default class NoteCardComponent extends Vue {
     this.deleting = true;
     const noteIdString = noteId.toString();
     NoteFetcher.deleteListNote(noteIdString)
-      .then(response => {
-        console.log(response);
-      })
+      .then()
       .catch(error => {
-        this.errorMsgs.push("Unable to retrieve your notes.");
-        this.error = true;
+        const errorMsg = "Unable to delete this note.";
+        this.displayError(errorMsg);
         throw error;
       })
       .finally(() => {
         this.deleting = false;
         this.$emit("note_deleted", noteId);
       });
+  }
+
+  private displayError(errorMessage: string): void {
+    this.errorMsg = errorMessage;
+    this.error = true;
+    setTimeout(() => {
+      this.errorMsg = "";
+      this.error = false;
+    }, 3000);
   }
 }
 </script>
@@ -185,6 +180,7 @@ export default class NoteCardComponent extends Vue {
 .note-actions {
   justify-content: center;
 }
+
 button#save-btn {
   &.update {
     background-color: $color-brand-blue-base;
@@ -210,5 +206,13 @@ button#save-btn {
     color: $color-brand-blue-base;
     cursor: pointer;
   }
+}
+
+.error-msg-wrapper {
+  height: 27px;
+  text-align: center;
+  @include noto-sans-light($color-brand-red-base, 16px);
+  line-height: 27px;
+  font-weight: bold;
 }
 </style>

@@ -57,7 +57,6 @@ export default class Home extends Vue {
   public totalNotesAvailable = 0;
 
   /** PUBLIC METHODS --------------------- */
-
   public handleDeletedNote(noteId: string): void {
     for (let i = 0; i < this.notes.length; i++) {
       const note = this.notes[i];
@@ -72,20 +71,15 @@ export default class Home extends Vue {
   }
 
   /** LIFECYCLE HOOKS  ------------------- */
-  // beforeCreate(): void {}
   created(): void {
     this.getNotes();
   }
-  // beforeMount(): void {}
+
   mounted(): void {
     this.loading = true;
     this.fillNotebookPage();
     this.scroll();
   }
-  // beforeDestroy(): void {}
-  // destroyed(): void {}
-  // beforeUpdate(): void {}
-  // updated(): void {}
 
   /** PRIVATE PROPERTIES ----------------- */
 
@@ -98,20 +92,23 @@ export default class Home extends Vue {
     // concatting and setting to dedupe the array of notes
     const newNotes = response.data._embedded.notes;
     const allNotes = this.notes.concat(newNotes);
-    const set = new Set(allNotes);
+    const sortedNotes: Array<NoteObject> = allNotes.sort((n1, n2) => {
+      if (n1.id < n2.id) return -1;
+      if (n1.id > n2.id) return 1;
+      return 0;
+    });
+    const set = new Set(sortedNotes);
     this.notes = Array.from(set);
   }
 
   private getNotes(): void {
     NoteFetcher.getListNotes(this.nextRequestNotesPage, this.noteRequestLimit)
       .then(response => {
-        console.log(response);
         this.appendNotes(response);
         this.totalNotesAvailable = response.data.total;
         this.nextRequestNotesPage++;
       })
       .catch(error => {
-        console.log(error);
         this.errorMsg = "Unable to retrieve your notes.";
         this.error = true;
       })

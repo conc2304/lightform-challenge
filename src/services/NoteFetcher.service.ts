@@ -5,13 +5,16 @@ class DataFetcher {
   /** PUBLIC PROPERTIES------------------- */
 
   /** PUBLIC METHODS --------------------- */
-  public async getListNotes(page: number, limit: number): Promise<AxiosResponse> {
+  public async getListNotes(
+    page: number,
+    limit: number,
+  ): Promise<AxiosResponse> {
     const path = `${this.LF_API_URL}/notes`;
     const params = {
       params: {
         page: page,
         limit: limit,
-      }
+      },
     };
 
     return axios
@@ -35,11 +38,10 @@ class DataFetcher {
 
   public async updateNote(note: NoteObject): Promise<AxiosResponse> {
     const path = `${this.LF_API_URL}/notes?id=${note.id}`;
-    const noteId = note.id.toString();
     const data = {
-      "title": note.title.toString(),
-      "body": note.body.toString()
-    }
+      titles: note.title.toString(),
+      body: note.body.toString(),
+    };
 
     return axios
       .post(path, data)
@@ -52,9 +54,9 @@ class DataFetcher {
   public async saveNote(note: NoteObject): Promise<AxiosResponse> {
     const path = `${this.LF_API_URL}/notes`;
     const data = {
-      "title": note.title.toString(),
-      "body": note.body.toString()
-    }
+      title: note.title.toString(),
+      body: note.body.toString(),
+    };
 
     return axios
       .post(path, data)
@@ -68,8 +70,8 @@ class DataFetcher {
     const path = `${this.LF_API_URL}/notes/${noteId}`;
     const params = {
       params: {
-        id: noteId
-      }
+        id: noteId,
+      },
     };
 
     return axios
@@ -78,7 +80,6 @@ class DataFetcher {
       .catch(error => {
         throw error;
       });
-
   }
 
   /** PRIVATE PROPERTIES ----------------- */

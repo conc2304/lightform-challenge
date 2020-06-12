@@ -52,22 +52,14 @@ export default class NoteIdPage extends Vue {
   /** PUBLIC METHODS --------------------- */
 
   /** LIFECYCLE HOOKS  ------------------- */
-  // beforeCreate(): void {}
-  // created(): void {}
-  // beforeMount(): void {}
   mounted(): void {
-    console.log(this.$route.params.noteId);
-
     const noteId = this.$route.params.noteId.toString();
 
     NoteFetcher.retreiveNote(noteId)
       .then(response => {
-        console.log(response);
-        console.log(this.noteInView);
         this.noteInView = response.data;
       })
       .catch(error => {
-        console.log(error);
         this.errorMsg = "Unable to retrieve this note.";
         this.error = true;
         this.noteInView = {
@@ -80,10 +72,6 @@ export default class NoteIdPage extends Vue {
         this.loading = false;
       });
   }
-  // beforeDestroy(): void {}
-  // destroyed(): void {}
-  // beforeUpdate(): void {}
-  // updated(): void {}
 
   /** PRIVATE PROPERTIES ----------------- */
 
