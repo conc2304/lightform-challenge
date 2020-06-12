@@ -7,6 +7,7 @@
     v-form( 
       ref="form"
       v-model="valid"
+      laz-validtion
     )
       v-container
         v-text-field(
@@ -116,7 +117,17 @@ export default class NoteCardComponent extends Vue {
   private saveNote(note: NoteObject): void {
     this.saving = true;
     NoteFetcher.saveNote(note)
-      .then()
+      .then(response => {
+        const noteId = response.data;
+        const noteEmitted: NoteObject = {
+          body: note.body,
+          title: note.title,
+          id: noteId,
+        };
+
+        this.$emit("note_saved", noteEmitted);
+        this.resetNote();
+      })
       .catch(error => {
         const errorMsg = "Unable to save your note.";
         this.displayError(errorMsg);
@@ -124,14 +135,15 @@ export default class NoteCardComponent extends Vue {
       })
       .finally(() => {
         this.saving = false;
-        this.$emit("note_saved", note);
       });
   }
 
   private updateNote(note: NoteObject): void {
     this.saving = true;
     NoteFetcher.updateNote(note)
-      .then()
+      .then(() => {
+        this.$emit("note_updated", note.id);
+      })
       .catch(error => {
         const errorMsg = "Unable to update your note.";
         this.displayError(errorMsg);
@@ -139,7 +151,6 @@ export default class NoteCardComponent extends Vue {
       })
       .finally(() => {
         this.saving = false;
-        this.$emit("note_updated", note.id);
       });
   }
 
@@ -147,7 +158,9 @@ export default class NoteCardComponent extends Vue {
     this.deleting = true;
     const noteIdString = noteId.toString();
     NoteFetcher.deleteListNote(noteIdString)
-      .then()
+      .then(() => {
+        this.$emit("note_deleted", noteId);
+      })
       .catch(error => {
         const errorMsg = "Unable to delete this note.";
         this.displayError(errorMsg);
@@ -155,7 +168,6 @@ export default class NoteCardComponent extends Vue {
       })
       .finally(() => {
         this.deleting = false;
-        this.$emit("note_deleted", noteId);
       });
   }
 
@@ -166,6 +178,12 @@ export default class NoteCardComponent extends Vue {
       this.errorMsg = "";
       this.error = false;
     }, 3000);
+  }
+
+  private resetNote(): void {
+    // this.form.reset();
+    // console.log(;
+    (this.$refs.form as any).reset();
   }
 }
 </script>

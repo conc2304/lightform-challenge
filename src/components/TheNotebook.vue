@@ -8,6 +8,7 @@
           )
             NoteCardComponent(
               :inNotebook="true"
+              @note_saved="handleAddedNote"
             )
             NoteCardComponent(
               v-for="(note, i) in notes" 
@@ -15,13 +16,12 @@
               :note="note"
               :inNotebook="true"
               @note_deleted="handleDeletedNote"
-              @note_saved="handleAddedNote"
             )
         v-col.end-of-notes( 
           v-if="lastNoteReached"
           cols="12"
         )
-          h4 Sorry Those are all of your notes
+          h4 Sorry #[br] Those are all of your notes
           p( @click="scrollToTop") go back to top
 
             
@@ -52,7 +52,7 @@ export default class Home extends Vue {
   public error = false;
   public loading = true;
   public errorMsg = "";
-  public noteRequestLimit = 3;
+  public noteRequestLimit = 5;
   public nextRequestNotesPage = 1;
   public totalNotesAvailable = 0;
 
@@ -64,10 +64,11 @@ export default class Home extends Vue {
         this.notes.splice(i, 1);
       }
     }
+    this.fillNotebookPage();
   }
 
   public handleAddedNote(note: NoteObject): void {
-    this.notes.push(note);
+    this.notes.unshift(note);
   }
 
   /** LIFECYCLE HOOKS  ------------------- */
