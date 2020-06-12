@@ -1,5 +1,8 @@
 <template lang="pug">
-    .notebook( ref="notebook" v-if="notes.length > 0 || loading")
+    .notebook( 
+      ref="notebook" 
+      v-if="notes.length > 0 || loading"
+    )
       v-container( fluid)
         v-col( cols="12")
           v-row( 
