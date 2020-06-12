@@ -14,6 +14,13 @@
               @note_deleted="handleDeletedNote"
               @note_saved="handleAddedNote"
             )
+        v-col.end-of-notes( 
+          v-if="lastNoteReached"
+          cols="12"
+        )
+          h4 Sorry Those are all of your notes
+          p( @click="scrollToTop") go back to top
+
             
     .no-notes-wrapper( v-else) 
       h2 You currently have no notes.  Why don't you start a new one.
@@ -38,7 +45,7 @@ export default class Home extends Vue {
   @Prop({ type: String, default: "Title" }) noteTitle!: string;
 
   /** PUBLIC PROPERTIES------------------- */
-  public notes: Array<any> = [];
+  public notes: Array<NoteObject> = [];
   public error = false;
   public loading = true;
   public errorMsg = "";
@@ -51,7 +58,6 @@ export default class Home extends Vue {
   public handleDeletedNote(noteId: string): void {
     for (let i = 0; i < this.notes.length; i++) {
       const note = this.notes[i];
-      console.log(note);
       if (note.id === Number(noteId)) {
         this.notes.splice(i, 1);
       }
@@ -81,6 +87,10 @@ export default class Home extends Vue {
   /** PRIVATE PROPERTIES ----------------- */
 
   /** PRIVATE METHODS -------------------- */
+  public get lastNoteReached(): boolean {
+    return this.notes.length === this.totalNotesAvailable;
+  }
+
   private appendNotes(response: AxiosResponse): void {
     // concatting and setting to dedupe the array of notes
     const newNotes = response.data._embedded.notes;
@@ -119,6 +129,10 @@ export default class Home extends Vue {
     };
   }
 
+  private scrollToTop(): void {
+    window.scrollTo(0, 0);
+  }
+
   private fillNotebookPage(): void {
     const notebookHeight = this.$el.clientHeight;
     const windowHeight = window.innerHeight;
@@ -135,5 +149,24 @@ export default class Home extends Vue {
 .no-notes-wrapper {
   @include noto-sans-light($color-brand-red-base, 22px);
   text-align: center;
+}
+
+.end-of-notes {
+  text-align: center;
+
+  h4 {
+    @include poppins-regular($color-brand-text-gray, 18px);
+    margin: 0 auto;
+  }
+
+  p {
+    @include poppins-medium($color-brand-blue-light, 14px);
+    margin-left: 10px;
+
+    &:hover {
+      color: $color-brand-blue-base;
+      cursor: pointer;
+    }
+  }
 }
 </style>

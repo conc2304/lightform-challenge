@@ -70,7 +70,7 @@ export default class NoteCardComponent extends Vue {
   public bodyRules = [
     (v: string) => !!v || "Note body is required",
     (v: string) =>
-      (v && v.length >= 10) || "Note body must be more than 10 characters",
+      (v && v.length >= 10) || "Note must be more than 10 characters",
   ];
 
   /** PUBLIC METHODS --------------------- */
@@ -83,7 +83,6 @@ export default class NoteCardComponent extends Vue {
   }
 
   public handleSave(): void {
-    const test = true;
     if (this.note.id == -1) {
       this.saveNote(this.note);
     } else {

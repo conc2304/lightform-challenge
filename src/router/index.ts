@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
+import NotePage from "../views/NotePage.vue";
 
 Vue.use(VueRouter);
 
@@ -10,6 +11,10 @@ const routes: Array<RouteConfig> = [
     name: "Home",
     component: Home,
   },
+  {
+    path: "/note/:id",
+    component: NotePage,
+  }
   // {
   //   path: "/about",
   //   name: "About",
