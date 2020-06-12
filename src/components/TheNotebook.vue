@@ -1,5 +1,5 @@
 <template lang="pug">
-    .notebook( v-if="notes.length > 0 || loading")
+    .notebook( ref="notebook" v-if="notes.length > 0 || loading")
       v-container( fluid)
         v-col( cols="12")
           v-row( 
@@ -64,15 +64,36 @@ export default class Home extends Vue {
 
   /** LIFECYCLE HOOKS  ------------------- */
   // beforeCreate(): void {}
-  // created(): void {}
+  created(): void {
+    this.getNotes();
+  }
   // beforeMount(): void {}
   mounted(): void {
     this.loading = true;
+    this.fillNotebookPage();
+    this.scroll();
+  }
+  // beforeDestroy(): void {}
+  // destroyed(): void {}
+  // beforeUpdate(): void {}
+  // updated(): void {}
 
+  /** PRIVATE PROPERTIES ----------------- */
+
+  /** PRIVATE METHODS -------------------- */
+  private appendNotes(response: AxiosResponse): void {
+    // concatting and setting to dedupe the array of notes
+    const newNotes = response.data._embedded.notes;
+    const allNotes = this.notes.concat(newNotes);
+    const set = new Set(allNotes);
+    this.notes = Array.from(set);
+  }
+
+  private getNotes(): void {
     NoteFetcher.getListNotes(this.nextRequestNotesPage, this.noteRequestLimit)
       .then(response => {
         console.log(response);
-        this.notesConcat(response);
+        this.appendNotes(response);
         this.totalNotesAvailable = response.data.total;
         this.nextRequestNotesPage++;
       })
@@ -85,20 +106,27 @@ export default class Home extends Vue {
         this.loading = false;
       });
   }
-  // beforeDestroy(): void {}
-  // destroyed(): void {}
-  // beforeUpdate(): void {}
-  // updated(): void {}
 
-  /** PRIVATE PROPERTIES ----------------- */
+  private scroll(): void {
+    window.onscroll = () => {
+      const bottomOfWindow =
+        document.documentElement.scrollTop + window.innerHeight ===
+        document.documentElement.offsetHeight;
 
-  /** PRIVATE METHODS -------------------- */
-  private notesConcat(response: AxiosResponse): void {
-    const newNotes = response.data._embedded.notes;
-    const allNotes = this.notes.concat(newNotes);
-    const set = new Set(allNotes);
-    this.notes = Array.from(set);
-    console.log(typeof this.notes);
+      if (bottomOfWindow) {
+        this.getNotes();
+      }
+    };
+  }
+
+  private fillNotebookPage(): void {
+    const notebookHeight = this.$el.clientHeight;
+    const windowHeight = window.innerHeight;
+
+    console.log(notebookHeight, windowHeight);
+    if (notebookHeight < windowHeight * 0.66) {
+      this.getNotes();
+    }
   }
 }
 </script>

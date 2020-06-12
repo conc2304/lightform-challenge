@@ -98,7 +98,7 @@ export default class NoteCardComponent extends Vue {
   // created(): void {}
   // beforeMount(): void {}
   mounted(): void {
-    console.log(process.env.NODE_ENV);
+    // console.log(process.env.NODE_ENV);
   }
   // beforeDestroy(): void {}
   // destroyed(): void {}
