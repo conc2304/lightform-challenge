@@ -34,7 +34,7 @@ Dependencies Added:
 - Delete notes
 - Edit the note title or body
 
-I created a page that loads a set of of 5 notes of upon landing on home page. If there are room fore more it will load more until the space is filled.
+I created a page that loads a set of 5 notes upon landing on the home page. If there is room for more it will load more until the space is filled. If not it will lazy load them on scroll.
 
 ## Bonuses!
 
