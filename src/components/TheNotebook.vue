@@ -109,7 +109,7 @@ export default class Home extends Vue {
         this.totalNotesAvailable = response.data.total;
         this.nextRequestNotesPage++;
       })
-      .catch(error => {
+      .catch(() => {
         this.errorMsg = "Unable to retrieve your notes.";
         this.error = true;
       })

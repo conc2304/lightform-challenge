@@ -46,6 +46,10 @@
             v-if="inNotebook && note.id > 0"
             @click="navigateToFullNote(note.id)"
           ) view full note
+          p( 
+            v-if="!inNotebook && note.id > 0"
+            @click="navigateHome()"
+          ) back to all notes
 </template>
 
 <script lang="ts">
@@ -107,6 +111,10 @@ export default class NoteCardComponent extends Vue {
 
   public navigateToFullNote(noteId: number) {
     this.$router.push({ name: "Note", params: { noteId: noteId.toString() } });
+  }
+
+  public navigateHome() {
+    this.$router.push({ name: "Home" });
   }
 
   /** LIFECYCLE HOOKS  ------------------- */
@@ -181,8 +189,6 @@ export default class NoteCardComponent extends Vue {
   }
 
   private resetNote(): void {
-    // this.form.reset();
-    // console.log(;
     (this.$refs.form as any).reset();
   }
 }
