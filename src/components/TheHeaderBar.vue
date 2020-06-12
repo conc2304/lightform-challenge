@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-app-bar.header-bar( app dark)
+  v-app-bar#header-bar( app dark)
     #header-content.d-flex.align-center
       v-img(
         alt="Lightform Logo"
@@ -32,7 +32,7 @@ export default class TheHeaderBar extends Vue {
   justify-content: space-between;
   width: 100%;
 }
-.header-bar {
+#header-bar {
   @include linear-gradient-brand-grey;
 }
 

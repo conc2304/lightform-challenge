@@ -2,7 +2,7 @@
   v-card.note-card( 
     v-if="note"
     outlined
-    :class="[inNotebook ? 'tile ma-3 pa-6' : 'full-page-note']"
+    :class="[inNotebook ? 'tile ma-3 pa-6' : 'full-page-note', !isExistingNote ? 'new-note' : 'loaded-note']"
   )
     v-form( 
       ref="form"
@@ -10,14 +10,14 @@
       laz-validtion
     )
       v-container
-        v-text-field(
+        v-text-field#title-input(
           v-model="note.title"
           :rules="titleRules"
           label="Title"
           required
           dark
         )
-        v-textarea(
+        v-textarea#body-input(
           v-model="note.body"
           :rules="bodyRules"
           label="Make a note ..."
@@ -199,6 +199,10 @@ export default class NoteCardComponent extends Vue {
   border: 1px solid $color-brand-gray-light;
   border-radius: 5px;
   margin: 20px;
+
+  &.new-note.new-note {
+    border-color: $color-brand-purple-base;
+  }
 }
 
 .note-actions {

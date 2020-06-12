@@ -6,7 +6,7 @@ import { shallowMount, Wrapper } from "@vue/test-utils";
 // ==== App Imports =======================================================
 import NoteCardComponent from "@/components/NoteCardComponent.vue";
 
-describe("Test.vue", () => {
+describe("NoteCardComponent.vue", () => {
   let wrapper: Wrapper<Vue>;
 
   beforeEach(() => {

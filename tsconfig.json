@@ -34,7 +34,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx", "tests/e2e/specs/NoteCard.e2e.js"
   ],
   "exclude": [
     "node_modules"
