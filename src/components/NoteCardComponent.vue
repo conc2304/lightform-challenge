@@ -189,7 +189,9 @@ export default class NoteCardComponent extends Vue {
   }
 
   private resetNote(): void {
-    (this.$refs.form as any).reset();
+    // eslint-disable-next-line
+    (this.$refs.form as any)
+      .reset();
   }
 }
 </script>

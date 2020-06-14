@@ -14,12 +14,14 @@ describe("NoteCardComponent.vue", () => {
   const localVue = createLocalVue();
   const saveBtnSelector = ".save-btn";
   let wrapper: Wrapper<Vue>;
+  // eslint-disable-next-line
   let vm: any;
 
   localVue.use(VueRouter);
   chai.use(spies);
 
   function mountComponentWithProperties(
+    // eslint-disable-next-line
     componentProps: Record<string, any>,
   ): void {
     wrapper = shallowMount(NoteCardComponent, {
