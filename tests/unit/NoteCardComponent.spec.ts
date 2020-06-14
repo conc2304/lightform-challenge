@@ -62,7 +62,6 @@ describe("NoteCardComponent.vue", () => {
     expect(wrapper.attributes("class")).to.include("loaded-note");
     expect(wrapper.attributes("class")).to.include("tile");
     expect(vm.isExistingNote).to.be.true;
-
   });
 
   it("should initialize the note with no properties as not savable", async () => {
@@ -92,7 +91,6 @@ describe("NoteCardComponent.vue", () => {
     expect(vm.noteIsSavable).to.be.true;
   });
 
-
   it("should set 'isExistingNote' to TRUE if note HAS note properties", async () => {
     // GIVEN
     const testNote = {
@@ -102,7 +100,7 @@ describe("NoteCardComponent.vue", () => {
     };
     mountComponentWithProperties(testNote);
     wrapper.setProps({
-      note: testNote
+      note: testNote,
     });
 
     // WHEN
@@ -163,7 +161,7 @@ describe("NoteCardComponent.vue", () => {
 
     const componentProps = {
       note: testNote,
-    }
+    };
 
     mountComponentWithProperties(componentProps);
     const spy = chai.spy(vm.saveNote);

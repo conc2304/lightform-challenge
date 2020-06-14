@@ -60,6 +60,7 @@ export default class NoteIdPage extends Vue {
         this.noteInView = response.data;
       })
       .catch(error => {
+        console.warn(error);
         this.errorMsg = "Unable to retrieve this note.";
         this.error = true;
         this.noteInView = {

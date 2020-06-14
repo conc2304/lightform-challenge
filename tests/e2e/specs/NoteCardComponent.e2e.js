@@ -104,7 +104,7 @@ describe("Home Page", () => {
     });
   });
 
-  it.only("should remove note from list on delete", () => {
+  it("should remove note from list on delete", () => {
     let initialNoteCardCount;
     cy.get(loadedNoteSelector).then(loadedCards => {
       initialNoteCardCount = loadedCards.length;
@@ -113,7 +113,7 @@ describe("Home Page", () => {
         .find(".delete-btn")
         .click();
     });
-    
+
     cy.wait(500);
 
     cy.get(loadedNoteSelector).then(loadedCards => {
