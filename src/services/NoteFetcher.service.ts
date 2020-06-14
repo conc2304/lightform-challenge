@@ -83,7 +83,7 @@ class DataFetcher {
   }
 
   /** PRIVATE PROPERTIES ----------------- */
-  protected LF_API_URL = "http://note.dev.cloud.lightform.com";
+  protected LF_API_URL = process.env.VUE_APP_LF_API_URL;
 
   /** PRIVATE METHODS -------------------- */
 }
