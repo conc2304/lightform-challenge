@@ -10,14 +10,14 @@
       laz-validtion
     )
       v-container
-        v-text-field#title-input(
+        v-text-field.title-input(
           v-model="note.title"
           :rules="titleRules"
           label="Title"
           required
           dark
         )
-        v-textarea#body-input(
+        v-textarea.body-input(
           v-model="note.body"
           :rules="bodyRules"
           label="Make a note ..."
@@ -30,23 +30,24 @@
           .error-msg( v-if="error" ) {{ errorMsg }}
 
         v-card-actions.note-actions
-          v-btn#save-btn(
+          v-btn.save-btn(
             @click="handleSave()"
             :disabled="!noteIsSavable"
             :class="isExistingNote ? 'update' : 'save'"
           ) {{ isExistingNote ? "Update" : "Save"}}
-          v-btn#delete-btn(
+          v-btn.delete-btn(
             v-if="isExistingNote"
             color="colorBrandRedBase"
             @click="deleteNote(note.id)"
             :disabled="deleting"
           ) Delete
         .see-full-note-link 
-          p(
+          p.link-to-full-note(
             v-if="inNotebook && note.id > 0"
             @click="navigateToFullNote(note.id)"
+            :data-nid="note.id"
           ) view full note
-          p( 
+          p.link-to-home( 
             v-if="!inNotebook && note.id > 0"
             @click="navigateHome()"
           ) back to all notes
@@ -208,7 +209,7 @@ export default class NoteCardComponent extends Vue {
   justify-content: center;
 }
 
-button#save-btn {
+button.save-btn {
   &.update {
     background-color: $color-brand-blue-base;
     &:hover {

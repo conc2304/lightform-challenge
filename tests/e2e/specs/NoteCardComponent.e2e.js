@@ -1,5 +1,6 @@
 import { expect } from "chai";
 
+
 describe("Home Page", () => {
   beforeEach(() => {
     cy.visit("/");
@@ -39,7 +40,7 @@ describe("Home Page", () => {
       });
   });
 
-  it("Second card is a loaded note and has update, delete, and view full note buttons", () => {
+  it("should load second note with update, delete, and view full note buttons", () => {
     cy.wait(2000);
     cy.get(".note-card")
       .eq(1)
@@ -56,5 +57,16 @@ describe("Home Page", () => {
         expect(link.length).to.equal(1);
         expect(link.eq(0).text()).to.equal("view full note");
       });
+  });
+
+  it.only("should navigate to full note page", () => {
+    cy.wait(2000);
+    cy.get(".note-card.loaded-note .see-full-note-link").then(
+      loadedNoteCard => {
+        const link = loadedNoteCard.find(".see-full-note-link");
+        // const nid = link.invoke("attr", "data-nid");
+        link.click();
+      },
+    );
   });
 });

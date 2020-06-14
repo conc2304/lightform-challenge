@@ -10,10 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@types/chai-spies": "^1.0.1",
-    "@types/sinon-chai": "^3.2.4",
     "axios": "^0.19.2",
-    "chai-spies": "^1.0.0",
     "core-js": "^3.6.5",
     "null-loader": "^4.0.0",
     "vue": "^2.6.11",
@@ -27,7 +24,9 @@
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
+    "@types/chai-spies": "^1.0.1",
     "@types/mocha": "^5.2.4",
+    "@types/sinon-chai": "^3.2.4",
     "@types/vuelidate": "^0.7.13",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -43,6 +42,7 @@
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^1.0.3",
     "chai": "^4.1.2",
+    "chai-spies": "^1.0.0",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",

@@ -3,23 +3,21 @@ import Vue from "vue";
 import chai, { expect } from "chai";
 import sinon from "sinon";
 import spies from "chai-spies";
-import { shallowMount, Wrapper, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
 import VueRouter from "vue-router";
 
 // ==== App Imports =======================================================
 import NoteCardComponent from "@/components/NoteCardComponent.vue";
 
-describe("NoteCardComponent.vue", () => {
+describe.only("JS:NoteCardComponent.vue", () => {
   const router = new VueRouter();
   const localVue = createLocalVue();
-  let wrapper: Wrapper<Vue>;
+  let wrapper;
 
   localVue.use(VueRouter);
   chai.use(spies);
 
-  function mountComponentWithProperties(
-    componentProps: Record<string, any>,
-  ): void {
+  function mountComponentWithProperties(componentProps) {
     wrapper = shallowMount(NoteCardComponent, {
       propsData: componentProps,
       localVue,
@@ -57,8 +55,7 @@ describe("NoteCardComponent.vue", () => {
     // THEN
     expect(wrapper.attributes("class")).to.include("loaded-note");
     expect(wrapper.attributes("class")).to.include("tile");
-    expect((wrapper.vm as any).isExistingNote).to.be.true;
-
+    expect(wrapper.vm.isExistingNote).to.be.true;
   });
 
   it("should initialize the note with no properties as not savable", async () => {
@@ -73,7 +70,7 @@ describe("NoteCardComponent.vue", () => {
     await Vue.nextTick();
 
     // THEN
-    expect((wrapper.vm as any).noteIsSavable).to.be.false;
+    expect(wrapper.vm.noteIsSavable).to.be.false;
   });
 
   it("should initialize the a valid note as savable", async () => {
@@ -85,9 +82,8 @@ describe("NoteCardComponent.vue", () => {
     await Vue.nextTick();
 
     // THEN
-    expect((wrapper.vm as any).noteIsSavable).to.be.true;
+    expect(wrapper.vm.noteIsSavable).to.be.true;
   });
-
 
   it("should set 'isExistingNote' to TRUE if note HAS note properties", async () => {
     // GIVEN
@@ -98,13 +94,13 @@ describe("NoteCardComponent.vue", () => {
     };
     mountComponentWithProperties(testNote);
     wrapper.setProps({
-      note: testNote
+      note: testNote,
     });
 
     // WHEN
 
     // THEN
-    expect((wrapper.vm as any).isExistingNote).to.be.true;
+    expect(wrapper.vm.isExistingNote).to.be.true;
   });
 
   it("should call 'handleSave' on save button click", async () => {
@@ -116,8 +112,8 @@ describe("NoteCardComponent.vue", () => {
     };
 
     mountComponentWithProperties(note);
-    const spy = chai.spy((wrapper.vm as any).handleSave);
-    const vm = wrapper.vm as any;
+    const spy = chai.spy(wrapper.vm.handleSave);
+    const vm = wrapper.vm;
     sinon.spy(vm, "handleSave");
 
     // WHEN
@@ -138,8 +134,8 @@ describe("NoteCardComponent.vue", () => {
     };
 
     mountComponentWithProperties(note);
-    const spy = chai.spy((wrapper.vm as any).updateNote);
-    const vm = wrapper.vm as any;
+    const spy = chai.spy(wrapper.vm.updateNote);
+    const vm = wrapper.vm;
     sinon.spy(vm, "updateNote");
 
     // WHEN
@@ -153,21 +149,27 @@ describe("NoteCardComponent.vue", () => {
 
   it.only("should call 'saveNote' on save button click", async () => {
     // GIVEN
-    const testNote = {
-      title: "",
-      body: "",
+    const spy = sinon.spy();
+
+    const note = {
+      title: "THIS IS A TITLE",
+      body: "THIS IS MY BODY - isn't it rad",
       id: -1,
     };
 
     const componentProps = {
-      note: testNote,
-    }
+      note: note,
+      propsData: {
+        saveNote: spy,
+      },
+    };
 
     mountComponentWithProperties(componentProps);
-    const vm = wrapper.vm as any;
+    const vm = wrapper.vm;
 
-    const spy = chai.spy((wrapper.vm as any).saveNote);
-    sinon.spy(vm, "saveNote");
+    // const spy = chai.spy(wrapper.vm.saveNote);
+
+    // sinon.spy(vm, "saveNote");
 
     // WHEN
     const saveButtonEl = wrapper.find(".save-btn");
@@ -176,5 +178,9 @@ describe("NoteCardComponent.vue", () => {
 
     // THEN
     expect(spy).to.have.been.called;
+  });
+
+  it.only("should go to full page note", async () => {
+    // expect(wrapper.vm.$refs.form.validate()).to.equal(false);
   });
 });
