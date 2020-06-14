@@ -12,7 +12,9 @@ import NoteCardComponent from "@/components/NoteCardComponent.vue";
 describe("NoteCardComponent.vue", () => {
   const router = new VueRouter();
   const localVue = createLocalVue();
+  const saveBtnSelector = ".save-btn";
   let wrapper: Wrapper<Vue>;
+  let vm: any;
 
   localVue.use(VueRouter);
   chai.use(spies);
@@ -25,6 +27,8 @@ describe("NoteCardComponent.vue", () => {
       localVue,
       router,
     });
+
+    vm = wrapper.vm;
   }
 
   it("should create the component", async () => {
@@ -57,7 +61,7 @@ describe("NoteCardComponent.vue", () => {
     // THEN
     expect(wrapper.attributes("class")).to.include("loaded-note");
     expect(wrapper.attributes("class")).to.include("tile");
-    expect((wrapper.vm as any).isExistingNote).to.be.true;
+    expect(vm.isExistingNote).to.be.true;
 
   });
 
@@ -73,7 +77,7 @@ describe("NoteCardComponent.vue", () => {
     await Vue.nextTick();
 
     // THEN
-    expect((wrapper.vm as any).noteIsSavable).to.be.false;
+    expect(vm.noteIsSavable).to.be.false;
   });
 
   it("should initialize the a valid note as savable", async () => {
@@ -85,7 +89,7 @@ describe("NoteCardComponent.vue", () => {
     await Vue.nextTick();
 
     // THEN
-    expect((wrapper.vm as any).noteIsSavable).to.be.true;
+    expect(vm.noteIsSavable).to.be.true;
   });
 
 
@@ -104,7 +108,7 @@ describe("NoteCardComponent.vue", () => {
     // WHEN
 
     // THEN
-    expect((wrapper.vm as any).isExistingNote).to.be.true;
+    expect(vm.isExistingNote).to.be.true;
   });
 
   it("should call 'handleSave' on save button click", async () => {
@@ -116,12 +120,11 @@ describe("NoteCardComponent.vue", () => {
     };
 
     mountComponentWithProperties(note);
-    const spy = chai.spy((wrapper.vm as any).handleSave);
-    const vm = wrapper.vm as any;
+    const spy = chai.spy(vm.handleSave);
     sinon.spy(vm, "handleSave");
 
     // WHEN
-    const saveButtonEl = wrapper.find(".save-btn");
+    const saveButtonEl = wrapper.find(saveBtnSelector);
     saveButtonEl.vm.$emit("click");
     await Vue.nextTick();
 
@@ -138,12 +141,11 @@ describe("NoteCardComponent.vue", () => {
     };
 
     mountComponentWithProperties(note);
-    const spy = chai.spy((wrapper.vm as any).updateNote);
-    const vm = wrapper.vm as any;
+    const spy = chai.spy(vm.updateNote);
     sinon.spy(vm, "updateNote");
 
     // WHEN
-    const saveButtonEl = wrapper.find(".save-btn");
+    const saveButtonEl = wrapper.find(saveBtnSelector);
     saveButtonEl.vm.$emit("click");
     await Vue.nextTick();
 
@@ -151,7 +153,7 @@ describe("NoteCardComponent.vue", () => {
     expect(spy).to.have.been.called;
   });
 
-  it.only("should call 'saveNote' on save button click", async () => {
+  it("should call 'saveNote' on save button click", async () => {
     // GIVEN
     const testNote = {
       title: "",
@@ -164,13 +166,11 @@ describe("NoteCardComponent.vue", () => {
     }
 
     mountComponentWithProperties(componentProps);
-    const vm = wrapper.vm as any;
-
-    const spy = chai.spy((wrapper.vm as any).saveNote);
+    const spy = chai.spy(vm.saveNote);
     sinon.spy(vm, "saveNote");
 
     // WHEN
-    const saveButtonEl = wrapper.find(".save-btn");
+    const saveButtonEl = wrapper.find(saveBtnSelector);
     saveButtonEl.vm.$emit("click");
     await Vue.nextTick();
 

@@ -1,9 +1,13 @@
 import { expect } from "chai";
 
-
 describe("Home Page", () => {
+  const noteCardsSelector = ".note-card";
+  const loadedNoteSelector = `${noteCardsSelector}.loaded-note`;
+  const newNoteSelector = `${noteCardsSelector}.new-note`;
+
   beforeEach(() => {
     cy.visit("/");
+    cy.wait(2000);
   });
 
   it("Has a header bar", () => {
@@ -11,20 +15,17 @@ describe("Home Page", () => {
   });
 
   it("Has note cards loaded", () => {
-    cy.get(".note-card").then(noteCards => {
-      const cardCount = Cypress.$(noteCards).length;
-      expect(noteCards).to.have.length(cardCount);
+    cy.get(noteCardsSelector).then(noteCards => {
+      const titleInput = noteCards.eq(0).find(".title-input");
+      const bodyInput = noteCards.eq(0).find(".body-input");
 
-      const titleInput = noteCards.eq(0).find("#title-input");
       expect(titleInput.length).to.equal(1);
-
-      const bodyInput = noteCards.eq(0).find("#body-input");
       expect(bodyInput.length).to.equal(1);
     });
   });
 
   it("First card is new note", () => {
-    cy.get(".note-card")
+    cy.get(noteCardsSelector)
       .eq(0)
       .then(firstNoteCard => {
         const buttons = firstNoteCard.find("button");
@@ -33,7 +34,7 @@ describe("Home Page", () => {
         expect(text).to.include("Save");
       });
 
-    cy.get(".new-note")
+    cy.get(newNoteSelector)
       .eq(0)
       .then(newNotes => {
         expect(newNotes).to.have.length(1);
@@ -41,8 +42,7 @@ describe("Home Page", () => {
   });
 
   it("should load second note with update, delete, and view full note buttons", () => {
-    cy.wait(2000);
-    cy.get(".note-card")
+    cy.get(noteCardsSelector)
       .eq(1)
       .then(secondNoteCard => {
         const buttons = secondNoteCard.find("button");
@@ -59,14 +59,65 @@ describe("Home Page", () => {
       });
   });
 
-  it.only("should navigate to full note page", () => {
-    cy.wait(2000);
-    cy.get(".note-card.loaded-note .see-full-note-link").then(
-      loadedNoteCard => {
-        const link = loadedNoteCard.find(".see-full-note-link");
-        // const nid = link.invoke("attr", "data-nid");
-        link.click();
-      },
+  it("should navigate to full note page and back", () => {
+    const linkSelector = `${loadedNoteSelector} .see-full-note-link p`;
+
+    cy.get(linkSelector)
+      .eq(0)
+      .then(loadedNoteCardLink => {
+        loadedNoteCardLink.click();
+      });
+    cy.wait(500);
+
+    cy.location().should(loc => {
+      const re = new RegExp(/\/note\/\d+/);
+      expect(loc.pathname).to.match(re);
+    });
+
+    cy.wait(500);
+    cy.get(linkSelector)
+      .eq(0)
+      .then(loadedNoteCardLink => {
+        loadedNoteCardLink.click();
+      });
+    cy.wait(500);
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq("/");
+    });
+  });
+
+  it("should add a new note on save", () => {
+    let initialNoteCardCount;
+    cy.get(loadedNoteSelector).then(loadedCards => {
+      initialNoteCardCount = loadedCards.length;
+    });
+    cy.get(`${newNoteSelector} .title-input`).type(
+      "Cypress Test: Inserting Test Title",
     );
+    cy.get(`${newNoteSelector} .body-input`).type(
+      "Cypress Test: Inserting Test Body",
+    );
+    cy.get(`${newNoteSelector} .save-btn`).click();
+    cy.wait(500);
+    cy.get(loadedNoteSelector).then(loadedCards => {
+      expect(loadedCards.length).to.eq(initialNoteCardCount + 1);
+    });
+  });
+
+  it.only("should remove note from list on delete", () => {
+    let initialNoteCardCount;
+    cy.get(loadedNoteSelector).then(loadedCards => {
+      initialNoteCardCount = loadedCards.length;
+      loadedCards
+        .eq(0)
+        .find(".delete-btn")
+        .click();
+    });
+    
+    cy.wait(500);
+
+    cy.get(loadedNoteSelector).then(loadedCards => {
+      expect(loadedCards.length).to.eq(initialNoteCardCount - 1);
+    });
   });
 });
