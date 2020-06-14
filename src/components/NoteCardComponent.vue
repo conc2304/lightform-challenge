@@ -94,6 +94,7 @@ export default class NoteCardComponent extends Vue {
 
   /** PUBLIC METHODS --------------------- */
   public handleSave(): void {
+    this.saving = true;
     if (this.note.id == -1) {
       this.saveNote(this.note);
     } else {
@@ -123,7 +124,6 @@ export default class NoteCardComponent extends Vue {
 
   /** PRIVATE METHODS -------------------- */
   private saveNote(note: NoteObject): void {
-    this.saving = true;
     NoteFetcher.saveNote(note)
       .then(response => {
         const noteId = response.data;
@@ -147,7 +147,6 @@ export default class NoteCardComponent extends Vue {
   }
 
   private updateNote(note: NoteObject): void {
-    this.saving = true;
     NoteFetcher.updateNote(note)
       .then(() => {
         this.$emit("note_updated", note.id);
