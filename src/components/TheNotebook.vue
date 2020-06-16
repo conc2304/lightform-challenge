@@ -81,8 +81,8 @@ export default class Home extends Vue {
 
   mounted(): void {
     this.loading = true;
-    this.fillNotebookPage();
     this.scroll();
+    this.fillNotebookPage();
   }
 
   /** PRIVATE PROPERTIES ----------------- */
@@ -141,7 +141,11 @@ export default class Home extends Vue {
     const notebookHeight = this.$el.clientHeight;
     const windowHeight = window.innerHeight;
 
-    if (notebookHeight < windowHeight * 0.7) {
+    if (this.nextRequestNotesPage === 1) {
+      this.nextRequestNotesPage = 2;
+    }
+
+    if (notebookHeight < windowHeight * 0.68) {
       this.getNotes();
     }
   }
