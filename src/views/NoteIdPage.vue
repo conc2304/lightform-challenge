@@ -81,6 +81,11 @@ export default class NoteIdPage extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.note-page-wrapper {
+  max-width: 900px;
+  margin: 50px auto;
+}
+
 .error-dialog {
   padding: 20px;
 }
