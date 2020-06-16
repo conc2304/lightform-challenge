@@ -190,8 +190,7 @@ export default class NoteCardComponent extends Vue {
 
   private resetNote(): void {
     // eslint-disable-next-line
-    (this.$refs.form as any)
-      .reset();
+    (this.$refs.form as any).reset();
   }
 }
 </script>
@@ -205,25 +204,25 @@ export default class NoteCardComponent extends Vue {
   &.new-note.new-note {
     border-color: $color-brand-purple-base;
   }
+
+  .save-btn.save-btn {
+    &.update {
+      background-color: $color-brand-blue-base;
+      &:hover {
+        background-color: $color-brand-blue-dark;
+      }
+    }
+    &.save {
+      background-color: $color-brand-green-base;
+      &:hover {
+        background-color: $color-brand-green-light;
+      }
+    }
+  }
 }
 
 .note-actions {
   justify-content: center;
-}
-
-button.save-btn {
-  &.update {
-    background-color: $color-brand-blue-base;
-    &:hover {
-      background-color: $color-brand-blue-dark;
-    }
-  }
-  &.save {
-    background-color: $color-brand-green-base;
-    &:hover {
-      background-color: $color-brand-green-light;
-    }
-  }
 }
 
 .see-full-note-link {

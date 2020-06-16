@@ -37,14 +37,14 @@ class DataFetcher {
   }
 
   public async updateNote(note: NoteObject): Promise<AxiosResponse> {
-    const path = `${this.LF_API_URL}/notes?id=${note.id}`;
+    const path = `${this.LF_API_URL}/notes/${note.id}`;
     const data = {
       titles: note.title.toString(),
       body: note.body.toString(),
-    };
+    }
 
     return axios
-      .post(path, data)
+      .patch(path, data)
       .then(response => response)
       .catch(error => {
         throw error;
