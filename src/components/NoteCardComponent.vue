@@ -26,8 +26,9 @@
           required
         )
 
-        .error-msg-wrapper
+        .msg-wrapper
           .error-msg( v-if="error" ) {{ errorMsg }}
+          .success-msg( v-if="showSuccessMsg") {{ successMsg}}
 
         v-card-actions.note-actions
           v-btn.save-btn(
@@ -80,6 +81,8 @@ export default class NoteCardComponent extends Vue {
   public deleting = false;
   public errorMsg!: string;
   public error = false;
+  public successMsg!: string;
+  public showSuccessMsg = true;
 
   public titleRules = [
     (v: string) => !!v || "Title is required",
@@ -136,6 +139,7 @@ export default class NoteCardComponent extends Vue {
 
         this.$emit("note_saved", noteEmitted);
         this.resetNote();
+        this.displaySuccessMessage(`Note ${noteId} saved`);
       })
       .catch(error => {
         const errorMsg = "Unable to save your note.";
@@ -151,6 +155,7 @@ export default class NoteCardComponent extends Vue {
     NoteFetcher.updateNote(note)
       .then(() => {
         this.$emit("note_updated", note.id);
+        this.displaySuccessMessage(`Note ${note.id} updated`);
       })
       .catch(error => {
         const errorMsg = "Unable to update your note.";
@@ -185,6 +190,15 @@ export default class NoteCardComponent extends Vue {
     setTimeout(() => {
       this.errorMsg = "";
       this.error = false;
+    }, 3000);
+  }
+
+  private displaySuccessMessage(msg: string): void {
+    this.successMsg = msg;
+    this.showSuccessMsg = true;
+    setTimeout(() => {
+      this.successMsg = "";
+      this.showSuccessMsg = false;
     }, 3000);
   }
 
@@ -237,11 +251,18 @@ export default class NoteCardComponent extends Vue {
   }
 }
 
-.error-msg-wrapper {
+.msg-wrapper {
   height: 27px;
   text-align: center;
-  @include noto-sans-light($color-brand-red-base, 16px);
   line-height: 27px;
   font-weight: bold;
+  @include noto-sans-light(null, 16px);
+
+  .error-msg {
+    color: $color-brand-red-base;
+  }
+  .success-msg {
+    color: $color-brand-green-base;
+  }
 }
 </style>

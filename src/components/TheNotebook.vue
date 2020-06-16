@@ -141,7 +141,7 @@ export default class Home extends Vue {
     const notebookHeight = this.$el.clientHeight;
     const windowHeight = window.innerHeight;
 
-    if (notebookHeight < windowHeight * 0.66) {
+    if (notebookHeight < windowHeight * 0.7) {
       this.getNotes();
     }
   }
